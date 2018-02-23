@@ -1,0 +1,81 @@
+{% extends "hospital/layout.html" %}
+{% load bootstrap3 %}
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+    
+    {# 데이트타임 컨트롤  #}
+    {{ form.media }}
+
+    <h3>{{ hospital_info.name }} 예약</h3>
+
+    <form name="reserve_form" action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-primary"/>
+    </form>
+    
+    <script>
+            $('#datepicker').datetimepicker({format: 'MM/DD/YYYY',defaultDate: "11/1/2018",})
+                .on('changeDate', function(e) {
+                    console.log(e);
+                    var date = e.date.getFullYear()+"-"+(e.date.getMonth()+1)+"-" + e.date.getDate();
+                    
+                    $.ajax({
+                       type:"POST",
+                       url:"{% url 'hospital:select_date' %}",
+                       
+                       data:{
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'hospital_id':'{{hospital_info.id}}',
+                            'reserve_date':date,
+                        },
+                        dataTyle:"json",
+                        success:function(response){
+                            formId="reserve_form";
+                            objId="time";
+                            var selectControl = $("form[name='"+formId +  "'] select[name='"+objId+"']");
+                            selectControl.empty(); 
+
+                            var jsonData = JSON.parse(JSON.parse(response).message);
+                            for(var i=0;i<jsonData.length;i++)
+                            {
+                                //console.log(jsonData[i][0]);
+                                selectControl.append("<option value="+ i +">"+jsonData[i][0]+"</option>");
+                            }
+                            console.log(jsonData[0]);
+                            /*for(var i=0;i<jsonData.counters.length;i++)
+                            {
+                                var counter = jsonData.counters[i];
+                                console.log(counter.counter_name);
+                            }*/
+                            /*
+                            console.log(jsonData.message[0]);
+                            console.log(jsonData.message[1]);
+                            console.log(jsonData.message[2]);
+                            console.log(Object.keys(jsonData.message).length);
+*/
+                        },
+                        error:function(response){
+                            
+                        },
+                    });
+                    
+                    // `e` here contains the extra attributes
+                    var a = "{{hospital}}"
+                    console.log(a)
+                });
+    </script>
+{% endblock %}
+
+
+<!--
+var hospital_id=$(this).attr('name')
+$.ajax({
+    type:"POST",
+    url:"{% url 'reserve:select_date' %}",
+    data: {'hospital_id':name}
+});
+-->

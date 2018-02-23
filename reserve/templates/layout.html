@@ -1,0 +1,75 @@
+{# bootstrap3 라이브러리 로드 #} 
+{% load bootstrap3 %}
+
+{#JQuery#}
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+{# bootstrap3 라이브러리를 통해 css/javascript 태그 출력 #} 
+{% bootstrap_css %} 
+{% bootstrap_javascript %}
+{#{% load bootstrap3 %}#}
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+
+<!doctype <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+</head>
+<body>
+        
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{% url "root" %}">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url "signup" %}">회원가입</a></li>
+                        <li><a href="{% url "login" %}?next={{request.path}}">로그인</a></li>
+                    {% else %}
+                        <li><a href="#">예약내역</a></li>   
+                        <li><a href="{% url "profile"  %}">프로필</a></li>
+                        <li><a href="{% url "logout" %}?next={{request.path}}">로그아웃</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    [{{ message.tags }}]   {# 메세지 Level #}
+                    {{ message.message }}  {# 실제 메세지 내용 #}
+                </div>
+            {% endfor %}
+        </div>
+    {%endif%}
+
+    {%block content%}
+    {%endblock%}
+</body>
+</html>
