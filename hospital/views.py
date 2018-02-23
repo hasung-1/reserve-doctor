@@ -1,18 +1,31 @@
 from django.core import serializers
 from django.shortcuts import render,get_object_or_404,redirect
-from .models import Hospital,Reserve,Time
+from .models import Hospital,Reserve,Time,Subject
 from django.contrib.auth.decorators import login_required
 from .forms import ReserveForm
 from django.views.generic import ListView
 from django.http import HttpResponse
 import json
 import datetime
+from django.views.generic import ListView
 
 # Create your views here.
 def index(request):
+    qs = Hospital.objects.all()
+
+    subject = request.GET.get('subject')
+    search_text = request.GET.get('search_text')
+    
+    
+    if search_text:
+        qs = qs.filter(name__icontains=search_text,subjects=subject)
+    
     return render(request,'hospital/index.html',{
-        'hospital_list':Hospital.objects.all(),
+        'hospital_list':qs,
+        'subject_list':Subject.objects.all(),
     })
+
+
 
 @login_required
 def reserve_new(request,hospital_id):

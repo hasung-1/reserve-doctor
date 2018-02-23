@@ -5,6 +5,19 @@
         <div class="row">
             <div class="col-sm-12">
                 <h3>예약가능한 병원목록</h3>
+
+                <form action="" method="get" class="form-inline">
+                    <div class="form-group">
+                        <select name="subject" class="form-control">
+                            {%for subject in subject_list%}
+                                <option value="{{subject.id}}">{{subject.subject}}</option>
+                            {% endfor %}
+                        </select> 
+                        <input type="text" name="search_text" value="{{ search_text }}" class="form-control"/>
+                        <input type="submit" value="검색" class="btn btn-primary" />
+                    </div>
+                </form>
+                
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
