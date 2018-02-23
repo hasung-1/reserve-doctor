@@ -17,8 +17,9 @@ def index(request):
 @login_required
 def reserve_new(request,hospital_id):
     hospital = get_object_or_404(Hospital,id = hospital_id)
+    
     if request.method=="POST":
-        print(request)
+        print(request.POST)
         form = ReserveForm(hospital,request.POST)
         
         if form.is_valid():
@@ -31,7 +32,7 @@ def reserve_new(request,hospital_id):
             return redirect('hospital:index')
     else:
         form = ReserveForm(hospital)
-    
+
     return render(request,'hospital/reserve_form.html',{
             'form':form,
             'hospital_info':hospital,
@@ -44,18 +45,16 @@ def timeConvertor(o):
 
 #Ajax
 def selectDate(request):
-    print("selectDate")
     hospital_id=request.POST.get('hospital_id',None)
     reserve_date=request.POST.get('reserve_date',None)
-
-    print(reserve_date)
+    doctor_id = request.POST.get('doctor_id',None)
 
     #예약되어있는 리스트
-    reserved_list = Time.objects.filter(hospital_id=hospital_id,reserve__date=reserve_date).values('time')
-    exclude_list = Time.objects.filter(hospital_id=hospital_id).exclude(time__in=reserved_list).values_list('time')
+    reserved_list = Time.objects.filter(hospital_id=hospital_id,reserve__date=reserve_date,reserve__doctor_id=doctor_id).values('time')
+    exclude_list = Time.objects.filter(hospital_id=hospital_id).exclude(time__in=reserved_list).values_list('id','time')
     qs_json = json.dumps(list(exclude_list),default=timeConvertor)
     context = {
-        'message':qs_json,
+        'data':qs_json,
         }
     
     return HttpResponse(json.dumps(context))

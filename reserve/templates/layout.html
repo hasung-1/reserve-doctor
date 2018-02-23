@@ -1,3 +1,4 @@
+{% load static %}
 {# bootstrap3 라이브러리 로드 #} 
 {% load bootstrap3 %}
 
@@ -5,16 +6,16 @@
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 
 {# bootstrap3 라이브러리를 통해 css/javascript 태그 출력 #} 
-{% bootstrap_css %} 
-{% bootstrap_javascript %}
-{#{% load bootstrap3 %}#}
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+{#<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>#}
+
 
 <!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!--<link rel="stylesheet" href="{% static "bootstrap-3.3.2/dist/css/bootstrap-theme.css" %}">-->
 
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<!--<script src="{% static "bootstrap-3.3.2/dist/js/bootstrap.min.js" %}"></script>-->
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 
 
 <!doctype <!DOCTYPE html>
@@ -24,11 +25,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <title>12345</title>
 </head>
 <body>
         
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -46,12 +47,12 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if not user.is_authenticated %}
-                        <li><a href="{% url "signup" %}">회원가입</a></li>
-                        <li><a href="{% url "login" %}?next={{request.path}}">로그인</a></li>
+                        <li><a href="{% url "signup" %} " class="glyphicon glyphicon-user">회원가입</a></li>
+                        <li><a href="{% url "login" %}?next={{request.path}}" class="glyphicon glyphicon-log-in">로그인</a></li>
                     {% else %}
-                        <li><a href="#">예약내역</a></li>   
-                        <li><a href="{% url "profile"  %}">프로필</a></li>
-                        <li><a href="{% url "logout" %}?next={{request.path}}">로그아웃</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-list-alt">예약내역</a></li>   
+                        <li><a href="{% url "profile"  %}" class="glyphicon glyphicon-user">프로필</a></li>
+                        <li><a href="{% url "logout" %}?next={{request.path}}" class="glyphicon glyphicon-log-out">로그아웃</a></li>
                     {% endif %}
                 </ul>
             </div>

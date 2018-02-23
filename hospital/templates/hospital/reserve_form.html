@@ -4,25 +4,29 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
+
 {% block content %}
-    
-    {# 데이트타임 컨트롤  #}
-    {{ form.media }}
+    <div class="container">
+        {# 데이트타임 컨트롤  #}
+        {{ form.media }}
 
-    <h3>{{ hospital_info.name }} 예약</h3>
+        <h3>{{ hospital_info.name }} 예약</h3>
 
-    <form name="reserve_form" action="" method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" class="btn btn-primary"/>
-    </form>
-    
+        <form name="reserve_form" action="" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {#{{ form.as_table }}#}
+            <input type="submit" class="btn btn-primary"/>
+        </form>
+    </div>
     <script>
-            $('#datepicker').datetimepicker({format: 'MM/DD/YYYY',defaultDate: "11/1/2018",})
-                .on('changeDate', function(e) {
-                    console.log(e);
-                    var date = e.date.getFullYear()+"-"+(e.date.getMonth()+1)+"-" + e.date.getDate();
-                    
+            function getData()
+            {
+                var date = $("#datepicker").data("datetimepicker").getDate(),
+                        formatted = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                    console.log(formatted);
+                    var doctor_id = $("select[name='doctor'] option:selected").val();
+
                     $.ajax({
                        type:"POST",
                        url:"{% url 'hospital:select_date' %}",
@@ -30,7 +34,8 @@
                        data:{
                             'csrfmiddlewaretoken': '{{ csrf_token }}',
                             'hospital_id':'{{hospital_info.id}}',
-                            'reserve_date':date,
+                            'doctor_id':doctor_id,
+                            'reserve_date':formatted,
                         },
                         dataTyle:"json",
                         success:function(response){
@@ -39,33 +44,29 @@
                             var selectControl = $("form[name='"+formId +  "'] select[name='"+objId+"']");
                             selectControl.empty(); 
 
-                            var jsonData = JSON.parse(JSON.parse(response).message);
+                            console.log(response);
+                            var jsonData = JSON.parse(JSON.parse(response).data);
+                            console.log(jsonData);
                             for(var i=0;i<jsonData.length;i++)
                             {
                                 //console.log(jsonData[i][0]);
-                                selectControl.append("<option value="+ i +">"+jsonData[i][0]+"</option>");
+                                selectControl.append("<option value="+ jsonData[i][0] +">"+jsonData[i][1]+"</option>");
                             }
-                            console.log(jsonData[0]);
-                            /*for(var i=0;i<jsonData.counters.length;i++)
-                            {
-                                var counter = jsonData.counters[i];
-                                console.log(counter.counter_name);
-                            }*/
-                            /*
-                            console.log(jsonData.message[0]);
-                            console.log(jsonData.message[1]);
-                            console.log(jsonData.message[2]);
-                            console.log(Object.keys(jsonData.message).length);
-*/
                         },
                         error:function(response){
                             
                         },
                     });
-                    
-                    // `e` here contains the extra attributes
-                    var a = "{{hospital}}"
-                    console.log(a)
+            }
+
+            $("select[name='doctor']").change(function(){
+                getData();
+            });
+            $('#datepicker').datetimepicker({format: 'MM/DD/YYYY',defaultDate: "11/1/2018",})
+                .on('changeDate', function(e) {
+                    getData();
+                    //나중에는 함수로 만들어서 의사, 날짜, 시간중 어떤걸 바꿔도 가능하도록 변경할것
+                    //var date = e.date.getFullYear()+"-"+(e.date.getMonth()+1)+"-" + e.date.getDate();
                 });
     </script>
 {% endblock %}
