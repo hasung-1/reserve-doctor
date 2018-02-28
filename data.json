@@ -1,0 +1,44 @@
+[
+{
+  "model": "hospital.subject",
+  "pk": 1,
+  "fields": {
+    "subject": "\ub0b4\uacfc"
+  }
+},
+{
+  "model": "hospital.subject",
+  "pk": 2,
+  "fields": {
+    "subject": "\uc774\ube44\uc778\ud6c4\uacfc"
+  }
+},
+{
+  "model": "hospital.subject",
+  "pk": 3,
+  "fields": {
+    "subject": "\ud53c\ubd80\uacfc"
+  }
+},
+{
+  "model": "hospital.subject",
+  "pk": 4,
+  "fields": {
+    "subject": "\ud638\ud761\uae30\ub0b4\uacfc"
+  }
+},
+{
+  "model": "hospital.subject",
+  "pk": 5,
+  "fields": {
+    "subject": "\ube44\ub1e8\uae30\uacfc"
+  }
+},
+{
+  "model": "hospital.subject",
+  "pk": 6,
+  "fields": {
+    "subject": "\uc18c\uc544\uccad\uc18c\ub144\uacfc"
+  }
+}
+]

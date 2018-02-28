@@ -33,10 +33,13 @@ class ReserveForm(ModelForm):
         model = Reserve
         fields= ['doctor','date','time']
 
+        #예약을 언제 까지 받을지 결정해야함(startDate,endDate)
         dateOptions = {
             'format': 'yyyy-mm-dd',
             'autoclose': True,
-            'todayHighlight' : True
+            'todayHighlight' : True,
+            'startDate':'+1d',
+            'endDate':'+7d',
             }
         
         #widgets={'date':DateWidget(attrs={'id':"datepicker"}, usel10n = True, bootstrap_version=3,options=dateOptions)}

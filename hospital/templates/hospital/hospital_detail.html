@@ -1,0 +1,30 @@
+{%extends "hospital/layout.html"%}
+
+
+
+{%block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>{{ hospital.name }}</h3>
+
+                
+
+                <hr/>
+
+                <h2>진료과목</h2>
+
+                <ul>
+                {% for subject in hospital.subjects.all %}
+                    <li>
+                        {{ subject.subject }}
+                    </li>
+                {% endfor %}
+                </ul>
+
+                <hr/>
+
+            </div>
+        </div>
+    </div>
+{%endblock%}

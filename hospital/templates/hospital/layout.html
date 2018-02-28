@@ -1,2 +1,6 @@
 {%extends "layout.html"%}
-
+{% load staticfiles %}
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static "css/style.css" %}"/>
+    <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet" type="text/css">
+{% endblock %}

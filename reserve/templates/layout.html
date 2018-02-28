@@ -25,7 +25,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>12345</title>
+    <title>{% block title %}{% endblock %}</title>
+    {% block extrastyle %}    {% endblock %}
 </head>
 <body>
         
@@ -50,7 +51,7 @@
                         <li><a href="{% url "signup" %} " class="glyphicon glyphicon-user">회원가입</a></li>
                         <li><a href="{% url "login" %}?next={{request.path}}" class="glyphicon glyphicon-log-in">로그인</a></li>
                     {% else %}
-                        <li><a href="#" class="glyphicon glyphicon-list-alt">예약내역</a></li>   
+                        <li><a href="{% url "hospital:reserve_list"%}" class="glyphicon glyphicon-list-alt">예약내역</a></li>   
                         <li><a href="{% url "profile"  %}" class="glyphicon glyphicon-user">프로필</a></li>
                         <li><a href="{% url "logout" %}?next={{request.path}}" class="glyphicon glyphicon-log-out">로그아웃</a></li>
                     {% endif %}

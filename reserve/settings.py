@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'debug_toolbar',
     'datetimewidget',
     'bootstrap3',
     'accounts',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'reserve.urls'
@@ -122,7 +124,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'reserve', 'static'), 
@@ -134,3 +135,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'staticfiles')
 USE_L10N = True
 USE_TZ = True 
 USE_I18N = True
+
+#debug-toolbar
+INTERNAL_IPS=['127.0.0.1']

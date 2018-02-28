@@ -1,0 +1,125 @@
+{%extends "hospital/layout.html"%} {% load hospital_extras %}
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script> {%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>예약가능한 병원목록</h3>
+
+            <form name="searchForm" action="" method="get" class="form-inline" >
+                <div class="form-group">
+                    <select name="sido" class="form-control">
+                        {%for sido in sido_list%}
+                        <option value="{{sido.sidoCode}}">{{sido.sidoName}}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="gungu" class="form-control" style="width:150px;height:35px;">
+                        
+                    </select>
+                    <select name="subject" class="form-control">
+                        {%for subject in subject_list%}
+                        <option value="{{subject.id}}">{{subject.subject}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="search_text" value="{{ search_text }}" class="form-control" />
+                    <input type="submit" value="검색" class="btn btn-primary" />
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <!--<h1><small class="pull-right">45 comments</small> Comments </h1>-->
+                    </div>
+                    <div class="comments-list">
+                        {% for hospital in hospital_list %}
+                        <div class="media">
+                            <button type="button" class="btn btn-primary pull-right"> 예약하기 </button>
+
+                            <a class="media-left" href="#">
+                                <img src="http://lorempixel.com/40/40/people/">
+                            </a>
+
+                            <div class="media-body">
+                                <a href="{% url "hospital:detail" hospital.id %}">
+                                    <h4 class="media-heading user_name">{{ hospital.name }}</h4>
+                                </a>
+                                <!--<h6>Wow! this is really great.</h6>-->
+                                <ul>
+                                    <li>전화번호 - {{hospital.tel}}</li>
+                                    <li>주소 - {{hospital.addr}}</li>
+                                    <li>진료과목 - {{hospital.subjects|join:","}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+
+
+
+
+                </div>
+                
+            </div>
+            <div class="pagination pull-right">
+                    <span class="step-links">
+                        {% if hospital_list.has_previous %}
+                            <a href="?page={{ hospital_list.previous_page_number }}">previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ hospital_list.number }} of {{ hospital_list.paginator.num_pages }}.
+                        </span>
+                
+                        {% if hospital_list.has_next %}
+                            <a href="?page={{ hospital_list.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+        </div>
+
+
+
+    </div>
+</div>
+</div>
+
+</div>
+<script>
+    $(document).ready(function() {
+        $("select[name='sido'] option:eq(0)").prop("selected",true);
+        $("select[name='sido']").trigger("change");
+    });
+
+    $("select[name='sido']").change(function () {
+        var sidoCode = $("select[name='sido'] option:selected").val();
+        console.log(sidoCode);
+        formName = "searchForm";
+        objName = "gungu";
+
+
+        var selectControl = $("form[name='" + formName + "'] select[name='" + objName + "']");
+        selectControl.empty();
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'hospital:select_sido' %}",
+
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'sidoCode': sidoCode,
+            },
+            dataTyle: "json",
+            success: function (response) {
+                selectControl.empty();
+
+                var jsonData = JSON.parse(JSON.parse(response).data);
+                for (var i = 0; i < jsonData.length; i++) {
+                    selectControl.append("<option value=" + jsonData[i][0] + ">" + jsonData[i][1] + "</option>");
+                }
+            },
+            error: function (response) {
+            },
+        });
+    });
+</script> {%endblock%}

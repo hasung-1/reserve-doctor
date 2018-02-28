@@ -9,10 +9,15 @@ class Subject(models.Model):
 
 class Hospital(models.Model):
     name=models.CharField(max_length=100)
+    subjects = models.ManyToManyField(Subject)
     tel=models.CharField(max_length=20)
     addr=models.CharField(max_length=100)
-    subjects = models.ManyToManyField(Subject)
     
+    
+    def GetSubjects(self):
+        return list(Hospital.objects.first().subjects.all().values_list('subject',flat=True))
+        
+
     def __str__(self):
         return self.name
 
@@ -45,3 +50,15 @@ class Reserve(models.Model):
     class Meta:
         #이 세개의 칼럼은 유니크해야함
         unique_together=('hospital','doctor','date','time',)
+
+        verbose_name = "예약내역"
+
+        #정렬
+        ordering=['-date','-time']
+
+class Sido(models.Model):
+    sidoCode = models.CharField(max_length=2)
+    sidoName = models.CharField(max_length=20)
+
+    gunguCode = models.CharField(max_length=5)
+    gunguName = models.CharField(max_length=20)

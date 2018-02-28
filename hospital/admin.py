@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Hospital,Time,Reserve,Doctor,Subject
+from .models import *
 # Register your models here.
 
 @admin.register(Hospital)
@@ -22,3 +22,7 @@ class DoctorAdmin(admin.ModelAdmin):
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('subject',)
+
+@admin.register(Sido)
+class SidoAdmin(admin.ModelAdmin):
+    list_display = ('sidoCode','sidoName','gunguCode','gunguName',)

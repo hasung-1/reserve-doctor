@@ -16,10 +16,18 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from django.shortcuts import redirect
+from django.conf import settings
+
 
 urlpatterns = [
-    url(r'^$', lambda r:redirect('hospital:index'),name='root'),
+    url(r'^$', lambda r:redirect('hospital:hospital_list'),name='root'),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^hospital/', include('hospital.urls',namespace='hospital')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns+=[
+        url(r'^__debug__/',include(debug_toolbar.urls)),
+    ]
