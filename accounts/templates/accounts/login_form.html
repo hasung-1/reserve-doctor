@@ -8,7 +8,7 @@
         
         <div class="center-block">
             <div class="login-box well">
-                <form action="" method="post" class="sign-in-form">
+                <form action="" method="post">
                     <legend class="text-center">로그인</legend>
                     {% csrf_token %}
                     {% for error in form.non_field_errors %}

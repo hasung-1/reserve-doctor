@@ -3,13 +3,43 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from .forms import UserForm
 from django.contrib.auth.models import User
+#from .models import User
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.views.generic import CreateView,TemplateView
-
+from .forms import HospitalSignUpForm, PersonalSignUpForm
 
 # Create your views here.
+class HospitalSignUpView(CreateView):
+    
+    model = User
+    form_class = HospitalSignUpForm
+    template_name = 'accounts/hospital_signup_form.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'hospital'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('/accounts/profile')
+        
+
+class PersonalSignUpView(CreateView):
+    model = User
+    form_class = PersonalSignUpForm
+    template_name = 'accounts/personal_signup_form.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'personal'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('/accounts/profile')
 
 class SignUpView(TemplateView):
     template_name = 'accounts/signup.html'

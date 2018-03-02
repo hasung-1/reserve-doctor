@@ -13,10 +13,8 @@ class Hospital(models.Model):
     tel=models.CharField(max_length=20)
     addr=models.CharField(max_length=100)
     
-    
     def GetSubjects(self):
         return list(Hospital.objects.first().subjects.all().values_list('subject',flat=True))
-        
 
     def __str__(self):
         return self.name
