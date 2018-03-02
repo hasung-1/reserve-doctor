@@ -3,13 +3,30 @@ from django.conf import settings
 
 # Create your models here.
 class Subject(models.Model):
+    code = models.CharField(max_length=3)
     subject = models.CharField(max_length=50)
+    class Meta:
+        #정렬
+        ordering=['code',]
+
     def __str__(self):
         return str(self.subject)
 
+class Sido(models.Model):
+    sidoCode = models.CharField(max_length=6)
+    sidoName = models.CharField(max_length=20)
+
+    gunguCode = models.CharField(max_length=6)
+    gunguName = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.sidoName + " " + self.gunguName
+
 class Hospital(models.Model):
-    name=models.CharField(max_length=100)
+    name=models.CharField(max_length=150)
     subjects = models.ManyToManyField(Subject)
+    sidogungu = models.ForeignKey(Sido)
+    dong = models.CharField(max_length=150)
     tel=models.CharField(max_length=20)
     addr=models.CharField(max_length=100)
     
@@ -54,9 +71,6 @@ class Reserve(models.Model):
         #정렬
         ordering=['-date','-time']
 
-class Sido(models.Model):
-    sidoCode = models.CharField(max_length=2)
-    sidoName = models.CharField(max_length=20)
 
-    gunguCode = models.CharField(max_length=5)
-    gunguName = models.CharField(max_length=20)
+
+    
