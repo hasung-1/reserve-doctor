@@ -27,22 +27,26 @@ class PersonalSignUpForm(UserCreationForm):
         return user
 
 class HospitalSignUpForm(UserCreationForm):
-    #hospital_name = forms.CharField(max_length=100)
-    
+    hospital_name = forms.CharField(max_length=100)
     sido = forms.CharField(max_length=30,widget=forms.HiddenInput(attrs={"id":"sido"}),required=False)
     gungu = forms.CharField(max_length=30,widget=forms.HiddenInput(attrs={"id":"gungu"}),required=False)
     dong = forms.CharField(max_length=30,widget=forms.HiddenInput(attrs={"id":"dong"}),required=False)
-    
+    tel = forms.CharField(max_length=30)
+
     class Meta(UserCreationForm.Meta):
         model = User
-        
 
     @transaction.atomic
     def save(self,commit=True):
+        #User 저장
         user = super().save(commit=False)
         print(self.cleaned_data)
         user.user_type = 2
         user.save()
+
+        #Hospital_User 저장
+        hospital_user = Hospital_User.objects.create(user=user,sido=self.cleaned_data.get('sido'),gungu=self.cleaned_data.get('gungu'),
+            dong = self.cleaned_data.get('dong'),tel=self.cleaned_data.get('tel'))
         return user
 
 #안씀

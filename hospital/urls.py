@@ -16,4 +16,6 @@ urlpatterns=[
     ##Ajax
     url(r'^selectdate/$',views.selectDate,name="select_date"),
     url(r'^selectSido/$',views.selectSido,name="select_sido"),
+    url(r'^reserve_cancel/$',views.cancelReserve,name="reserve_cancel"),
+    #url(r'^reserve/$',views.reserve,name="reserve"),
 ]

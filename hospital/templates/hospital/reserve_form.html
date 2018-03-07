@@ -12,51 +12,56 @@
 
         <h3>{{ hospital_info.name }} 예약</h3>
 
-        <form name="reserve_form" action="" method="post">
+        <form id="reserve_form" name="reserve_form" action="{% url "hospital:reserve_new" hospital_info.id%}" method="post">
             {% csrf_token %}
             {% bootstrap_form form %}
-            {#{{ form.as_table }}#}
-            <input type="submit" class="btn btn-primary"/>
+            <input type="submit" class="btn btn-primary" value="예약"/>
         </form>
     </div>
     <script>
-            function getData()
-            {
-                var date = $("#datepicker").data("datetimepicker").getDate(),
-                        formatted = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-                    console.log(formatted);
-                    var doctor_id = $("select[name='doctor'] option:selected").val();
+        $(document).ready(function() { 
+            $("#id_hospital").val('{{hospital_info.id}}')
+         });
+        
+        
+        
+        function getData()
+        {
+            var date = $("#datepicker").data("datetimepicker").getDate(),
+                    formatted = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                console.log(formatted);
+                var doctor_id = $("select[name='doctor'] option:selected").val();
 
-                    $.ajax({
-                       type:"POST",
-                       url:"{% url 'hospital:select_date' %}",
-                       
-                       data:{
-                            'csrfmiddlewaretoken': '{{ csrf_token }}',
-                            'hospital_id':'{{hospital_info.id}}',
-                            'doctor_id':doctor_id,
-                            'reserve_date':formatted,
-                        },
-                        dataTyle:"json",
-                        success:function(response){
-                            formId="reserve_form";
-                            objId="time";
-                            var selectControl = $("form[name='"+formId +  "'] select[name='"+objId+"']");
-                            selectControl.empty(); 
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'hospital:select_date' %}",
+                    
+                    data:{
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'hospital_id':'{{hospital_info.id}}',
+                        'doctor_id':doctor_id,
+                        'reserve_date':formatted,
+                    },
+                    dataTyle:"json",
+                    success:function(response){
+                        formId="reserve_form";
+                        objId="time";
+                        var selectControl = $("form[name='"+formId +  "'] select[name='"+objId+"']");
+                        selectControl.empty(); 
 
-                            console.log(response);
-                            var jsonData = JSON.parse(JSON.parse(response).data);
-                            console.log(jsonData);
-                            for(var i=0;i<jsonData.length;i++)
-                            {
-                                //console.log(jsonData[i][0]);
-                                selectControl.append("<option value="+ jsonData[i][0] +">"+jsonData[i][1]+"</option>");
-                            }
-                        },
-                        error:function(response){
-                            
-                        },
-                    });
+                        console.log(response);
+                        var jsonData = JSON.parse(JSON.parse(response).data);
+                        console.log(jsonData);
+                        for(var i=0;i<jsonData.length;i++)
+                        {
+                            //console.log(jsonData[i][0]);
+                            selectControl.append("<option value="+ jsonData[i][0] +">"+jsonData[i][1]+"</option>");
+                        }
+                    },
+                    error:function(response){
+                        
+                    },
+                });
             }
 
             $("select[name='doctor']").change(function(){

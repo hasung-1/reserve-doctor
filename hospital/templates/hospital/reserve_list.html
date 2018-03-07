@@ -12,6 +12,7 @@
                     <th>병원명</th>
                     <th>예약날짜</th>
                     <th>예약시간</th>
+                    <th>비고</th>
                 </thead>
                 <tbody>
                     {%for reserve in reserve_list %}
@@ -19,6 +20,7 @@
                             <td>{{reserve.hospital}}</td>
                             <td>{{reserve.date}}</td>
                             <td>{{reserve.time}}</td>
+                            <td><button id="reserve_cancel" name="{{reserve.id}}" type="button"  class="btn btn-danger btn-sm">예약취소</button></td>
                         </tr>
                     {%endfor%}
                 </tbody>
@@ -30,4 +32,31 @@
         </div>
     </div>
 </div>
+<script>
+    $("#reserve_cancel").click(function(){
+        var pk = $(this).attr('name');
+        if(confirm("정말 취소하시겠습니까?"))
+        {
+            $.ajax({
+                type:"POST",
+                url:"{% url 'hospital:reserve_cancel' %}",
+                
+                data:{
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'reserve_id':pk
+                    },
+                    dataTyle:"json",
+                    success:function(response){
+                        //나중에는 새로고침 말고 할것
+                        location.reload();
+                    },
+                    error:function(response){
+                    console.log("error");
+                    },
+                });    
+        }
+        
+    });
+    
+</script>
 {%endblock%}

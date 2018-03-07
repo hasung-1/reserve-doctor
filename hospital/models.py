@@ -66,7 +66,7 @@ class Reserve(models.Model):
         #이 세개의 칼럼은 유니크해야함
         unique_together=('hospital','doctor','date','time',)
 
-        verbose_name = "예약내역"
+        #verbose_name = "예약내역"
 
         #정렬
         ordering=['-date','-time']

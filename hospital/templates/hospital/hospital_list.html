@@ -4,7 +4,9 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>예약가능한 병원목록</h3>
-
+            
+                
+            
             <form name="searchForm" action="" method="get" class="form-inline" >
                 <div class="form-group">
                     <select name="sido" class="form-control">
@@ -32,8 +34,8 @@
                     <div class="comments-list">
                         {% for hospital in hospital_list %}
                         <div class="media">
-                            <button type="button" class="btn btn-primary pull-right"> 예약하기 </button>
-
+                            <!--<button type="button" class="btn btn-primary pull-right"> 예약하기 </button>-->
+                            <a href="{% url "hospital:reserve_new" hospital.id%}" class="btn btn-primary pull-right">예약하기</a>
                             <a class="media-left" href="#">
                                 <img src="http://lorempixel.com/40/40/people/">
                             </a>

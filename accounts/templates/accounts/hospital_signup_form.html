@@ -27,6 +27,10 @@
         function openDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
+                    console.log(data)
+                    $('#sido').val(data.sido);
+                    $('#gungu').val(data.sigungu);
+                    $('#dong').val(data.bname);
                     // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
      
                     // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
@@ -71,7 +75,9 @@
                         document.getElementById('guide').innerHTML = '';
                     }
                 }
-            }).open();
+            }).open({
+                autoClose:true
+            });
         }
     </script>
 
