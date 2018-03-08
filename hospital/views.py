@@ -74,21 +74,17 @@ class ReserveLV(ListView):
     def get_queryset(self):
         queryset = super(ReserveLV, self).get_queryset()
         
-        if self.request.user.user_type==1:
-            print("환자")
-        elif self.request.user.user_type==2:
-            print("병원")
+        #병원
+        if(self.request.user.user_type==2):
+            pass
+
+        #환자, Admin 포함
         else:
-            print("관리자")
-            
+            pass
+        
+
         queryset = queryset.filter(user=self.request.user)
         return queryset
-
-def hospital_reserve_list(request):
-    
-    return render(request,'hospital/hospital_reserve_list.html',{
-        
-    })
 
 
 # Create your views here.

@@ -10,7 +10,7 @@ urlpatterns=[
     url(r'(?P<hospital_id>\d+)/new/$', views.reserve_new, name='reserve_new'),
     url(r'reserve_list$', ReserveLV.as_view(), name='reserve_list'),
     url(r'(?P<pk>\d+)/$', HospitalDV.as_view(), name='detail'),
-    #url(r'^$',views.hospital_reserve_list,name='hospital_reserve_list'),
+    
 
 
     ##Ajax
