@@ -82,8 +82,10 @@ class ReserveLV(ListView):
         else:
             pass
         
-
-        queryset = queryset.filter(user=self.request.user)
+        #times = Time.objects.filter(hospital_id=1,time__gte=datetime.datetime.now())
+        #현재는 당일 예약 불가능
+        now = datetime.datetime.now()
+        queryset = queryset.filter(user=self.request.user,date__gte=now)
         return queryset
 
 
@@ -204,6 +206,7 @@ def cancelReserve(request):
     row.delete()
     return render(request,'hospital/reserve_list.html')
 
+#예약 내역
 def reserve(request):
     hospital_id = request.POST.get('hospital_id',None)
     hospital = get_object_or_404(Hospital,id = hospital_id)

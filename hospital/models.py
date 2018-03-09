@@ -13,28 +13,28 @@ class Subject(models.Model):
         return str(self.subject)
 
 class Sido(models.Model):
-    sidoCode = models.CharField(max_length=6)
+    sidoCode = models.CharField(max_length=2)
     sidoName = models.CharField(max_length=20)
 
     gunguCode = models.CharField(max_length=6)
     gunguName = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.sidoName + " " + self.gunguName
+        return str(self.sidoName) + " " + str(self.gunguName)
 
 class Hospital(models.Model):
     name=models.CharField(max_length=150)
-    subjects = models.ManyToManyField(Subject)
-    sidogungu = models.ForeignKey(Sido)
     dong = models.CharField(max_length=150)
-    tel=models.CharField(max_length=20)
-    addr=models.CharField(max_length=100)
+    addr=models.CharField(max_length=150)
+    tel=models.CharField(max_length=14)
+    sidogungu = models.ForeignKey(Sido)
+    subjects = models.ManyToManyField(Subject)
     
     def GetSubjects(self):
         return list(Hospital.objects.first().subjects.all().values_list('subject',flat=True))
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Time(models.Model):
     hospital = models.ForeignKey(Hospital)

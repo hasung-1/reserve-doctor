@@ -22,7 +22,7 @@ class HospitalSignUpView(CreateView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(addr_rest=form.data['addr_rest'])
         login(self.request, user)
         return redirect('/accounts/profile')
         
@@ -48,7 +48,7 @@ def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            new_suer = User.objects.create_user(**form.cleaned_data)
+            new_user = User.objects.create_user(**form.cleaned_data)
             login(request,new_user)
             return redirect(settings.LOGIN_URL)
         else:
