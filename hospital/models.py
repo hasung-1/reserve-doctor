@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from accounts.models import Hospital_User
 
 # Create your models here.
 class Subject(models.Model):
@@ -29,6 +30,7 @@ class Hospital(models.Model):
     tel=models.CharField(max_length=14)
     sidogungu = models.ForeignKey(Sido)
     subjects = models.ManyToManyField(Subject)
+    user = models.ForeignKey(Hospital_User)
     
     def GetSubjects(self):
         return list(Hospital.objects.first().subjects.all().values_list('subject',flat=True))
