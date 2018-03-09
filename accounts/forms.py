@@ -72,7 +72,8 @@ class HospitalSignUpForm(UserCreationForm):
             sidogungu = si_gu,
             dong=self.cleaned_data['dong'],
             tel=self.cleaned_data['tel'],
-            addr=real_addr)
+            addr=real_addr,
+            user=hospital_user)
         hos.save()
         hos.subjects.add(*self.cleaned_data.get('subjects'))
         return user
